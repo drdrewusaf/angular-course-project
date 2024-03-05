@@ -7,16 +7,40 @@ import { RecipeStartComponent } from "./recipe-book-feature/recipe-start/recipe-
 import { RecipeDetailComponent } from "./recipe-book-feature/recipe-detail/recipe-detail.component";
 import { RecipeEditComponent } from "./recipe-book-feature/recipe-edit/recipe-edit.component";
 import { RecipeResolverService } from "./recipe-book-feature/recipes-resolver.service";
+import { AuthComponent } from "./auth/auth.component";
+import { AuthGuard } from "./auth/auth.guard";
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/recipes', pathMatch: 'full' },
-    { path: 'recipes', component: RecipeBookFeatureComponent, children: [
-        { path:'', component: RecipeStartComponent, resolve: [RecipeResolverService] },
-        { path: 'new', component: RecipeEditComponent },
-        { path:':id', component: RecipeDetailComponent, resolve: [RecipeResolverService] },
-        { path: ':id/edit', component: RecipeEditComponent, resolve: [RecipeResolverService] },
-    ] },
-    { path: 'shopping-list', component: ShoppingListComponent },
+    { 
+        path: 'recipes', 
+        component: RecipeBookFeatureComponent,
+        canActivate: [AuthGuard], 
+        children: [
+            { path:'', 
+                component: RecipeStartComponent, 
+                resolve: [RecipeResolverService] 
+            },
+            { path: 'new', 
+                component: RecipeEditComponent 
+            },
+            { path:':id', 
+                component: RecipeDetailComponent, 
+                resolve: [RecipeResolverService] 
+            },
+            { path: ':id/edit', 
+                component: RecipeEditComponent, 
+                resolve: [RecipeResolverService] 
+            },
+        ] 
+    },
+    { path: 'shopping-list', 
+        component: ShoppingListComponent,
+        canActivate: [AuthGuard],
+    },
+    { path: 'auth', 
+        component: AuthComponent
+    },
 ]
 
 @NgModule({
